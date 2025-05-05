@@ -29,3 +29,25 @@
 ## Ideia inicial
 
 A ideia inicial do projeto é a criação de uma solução tecnológica para melhora no processo de divulgação e vendas de imóveis na região de Santa Catarina.
+
+## Padronização do projeto
+
+lingua -> Inglês
+
+### Estruturas de dados
+
+Variaveis -> camelCase 🐫
+<br>
+Funções e objetos -> PascalCase
+
+### Organização de pastas
+
+| Components
+<br>
+| Services
+<br>
+| Styles
+<br>
+| Models
+<br>
+| Utilities
