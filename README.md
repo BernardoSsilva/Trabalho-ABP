@@ -26,9 +26,43 @@
 
 <img src="https://skillicons.dev/icons?i=js,html,css,react,tailwind,github" />
 
-## Ideia inicial
+## Descrição do projeto
 
-A ideia inicial do projeto é a criação de uma solução tecnológica para melhora no processo de divulgação e vendas de imóveis na região de Santa Catarina.
+O projeto UniImmobile é um sistema de unificação de funcionalidades para aprimorar o processo de anuncio e vendas de imóveis em Santa Catarina.
+
+## Objetivo
+
+O objetivo do projeto é ser uma alternativa a postagem de imóveis em redes sociais ou por via oral, buscando reunir informações relevantes para a venda, ou aluguel, de terrenos, casas e apartamentos.
+
+## Publico alvo
+
+O publico alvo pondera entre 2 grupos:
+
+- Dono e funcionários de imobiliária;
+- Pessoas interessadas em terrenos, casas e apartamentos;
+
+## Estrutura do projeto
+
+### Pagina de administração
+
+A pagina de administração sera acessível apenas mediante a autenticação. Esta pagina será voltada para administração de usuários, imoveis e imagens.
+
+Ao entrar nesta pagina um usuário administrador poderá acessar os módulos de registro de novos usuários e registro de imóveis.
+
+No modulo de registro de usuário serão informados os dados de: telefone, email, nome, cpf e data de nascimento.
+
+No modulo de registro de imóveis haverão dois sub-módulos, o módulo de informações de imóvel, onde serão registrados dados como: endereço, link do google maps, cep, proprietário, número de telefone do responsável, presença de escritura do imóvel, etc; e o módulo de registro de imagens, onde serão vinculadas imagens ao imóvel selecionado.
+
+### Pagina de cliente
+
+A pagina do cliente será acessível sem autenticação, onde o usuário poderá visualizar informações dos imóveis e poderá ser redirecionado para troca de mensagens com o responsável do imóvel.
+
+## funcionalidades
+
+- Gerenciamento de usuários;
+- Gerenciamento de registros de imóveis;
+- Gerenciamento de imagens;
+- Redirecionamento para aplicativos de terceiros;
 
 ## Padronização do projeto
 
