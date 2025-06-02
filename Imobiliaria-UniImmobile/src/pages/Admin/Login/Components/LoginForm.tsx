@@ -1,24 +1,38 @@
+import { useState } from "react"
+import logo from "../../../../assets/ApplicationLogo.png"
 export function LoginForm() {
+
+    const [rememberMe, setRememberMe] = useState(false)
+
     return (
-        <form className="bg-slate-400 p-4 flex-col m-0 h-50% w-20%" >
-            <h1>Realize seu Login</h1>
+        <div className="w-1/2 flex flex-col items-center">
+            <form className=" w-3/5 h-1/2 p-5 mt-10 items-center flex flex-col">
+                <img className="w-1/2" src={logo} />
 
-            <div className="w-full m-1">
-                <label>
-                    Insira seu email:
-                </label>
-                <input type="email" className="border-white-200 border-2" />
+                <div className="mt-5 w-full">
+                    <p>
+                        Informe seu email
+                    </p>
+                    <input className="border border-solid rounded-md w-full" type="email" />
+                </div>
 
-            </div>
-
-            <div className="w-full">
-                <label>
-                    Insira sua senha:
-                </label>
-                <input type="password" className="border-white-200 border-2 " />
-            </div>
-
-            <input type="submit" className="w-full p-2 text-lg bg-emerald-500 text-white border-r-8" />
-        </form>
+                <div className="mt-5 w-full">
+                    <p>
+                        Informe sua senha
+                    </p>
+                    <input className="border border-solid rounded-md w-full" type="text" />
+                </div>
+                <div className="flex flex-row w-full">
+                    <input type="checkbox" className="w-4" value={rememberMe.toString()} onChange={(e) => setRememberMe(e.target.value == "true")} />
+                    <p className="ml-2">
+                        lembrar-me
+                    </p>
+                </div>
+                <input className="p-2 px-12 bg-(--primary-color) m-2 text-black hover:bg-(--primary-color-hover) transition-colors duration-300 rounded-md" type="submit" value="realizar login" />
+            </form>
+            <h2 className="text-(--primary-color) mt-30 font-semibold">
+                SUA SATISFAÇÃO É O NOSSO LEMA!
+            </h2>
+        </div>
     )
 }
