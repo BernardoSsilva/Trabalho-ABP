@@ -1,13 +1,13 @@
 import { useState } from "react"
-
+import logo from "../../../../assets/ApplicationLogo.png"
 export function LoginForm() {
 
     const [rememberMe, setRememberMe] = useState(false)
 
     return (
-        <div className="w-1/2 flex flex-col items-center justify-center">
-            <form className=" w-1/2 h-1/2 p-2 items-center flex flex-col border-gray-300 border-2 rounded-2xl">
-                <h1>Login</h1>
+        <div className="w-1/2 flex flex-col items-center">
+            <form className=" w-3/5 h-1/2 p-5 mt-10 items-center flex flex-col">
+                <img className="w-1/2" src={logo} />
 
                 <div className="mt-5 w-full">
                     <p>
@@ -28,9 +28,11 @@ export function LoginForm() {
                         lembrar-me
                     </p>
                 </div>
-                <input className="p-2 px-12 bg-emerald-200 mt-7 text-black hover:bg-emerald-500 hover:text-white transition-colors duration-300 rounded-md" type="submit" value="realizar login" />
+                <input className="p-2 px-12 bg-(--primary-color) m-2 text-black hover:bg-(--primary-color-hover) transition-colors duration-300 rounded-md" type="submit" value="realizar login" />
             </form>
-
+            <h2 className="text-(--primary-color) mt-30 font-semibold">
+                SUA SATISFAÇÃO É O NOSSO LEMA!
+            </h2>
         </div>
     )
 }
