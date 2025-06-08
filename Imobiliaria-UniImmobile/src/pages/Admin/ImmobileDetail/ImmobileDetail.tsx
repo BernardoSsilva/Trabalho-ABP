@@ -1,12 +1,11 @@
-import foto from "../../../assets/ImageImmobileDetail.png"
-import logo from"../../../assets/ApplicationLogo.png"
+import foto from "../../../assets/ImageImmobileDetails.png"
 import { NavBar } from "../../../utilities/NavBar";
 
 export function Details(){
     return(
       <div>
       <NavBar nameTitle="Edição de Imóveis"/>
-        <div className="ml-26 grid max-w-6xl mx-auto p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="mt-[110px] ml-26 grid max-w-6xl mx-auto p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
           <img src={foto} />
         <div className="text-gray-800 space-y-4">
           <h2 className="text-2xl font-semibold text-center">Casa, em Criciúma</h2>
