@@ -1,5 +1,4 @@
 import foto from "../../../assets/ImageImmobileDetails.png"
-import logo from"../../../assets/ApplicationLogo.png"
 import { NavBar } from "../../../utilities/NavBar";
 
 export function Details(){
