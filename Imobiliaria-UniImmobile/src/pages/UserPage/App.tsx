@@ -9,7 +9,8 @@
   // import { App } from './App.tsx'
   import { LoginPage } from '../Admin/Login/Login.tsx'
   import { RegisterProperties } from '../Admin/Registers/RegisterProperties.tsx'
-
+  import { Details } from '../Admin/ImmobileDetail/ImmobileDetail.tsx'
+  import { Home } from '../UserPage/Home/Home.tsx'
   // createRoot(document.getElementById('root')!).render(
   //   <BrowserRouter>
   //     <Routes>
@@ -28,6 +29,14 @@
       path: '/register-properties',
       element: <RegisterProperties />,
     },
+    {
+      path:'/Details',
+      element: <Details/>
+    },
+    {
+      path:'/home',
+      element: <Home/>
+    }
     // {
     //   path: '/app',
     //   element: <NavBar />,
