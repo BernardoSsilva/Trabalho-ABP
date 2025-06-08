@@ -9,7 +9,7 @@
   // import { App } from './App.tsx'
   import { LoginPage } from '../Admin/Login/Login.tsx'
   import { RegisterProperties } from '../Admin/Registers/RegisterProperties.tsx'
-
+import { Details } from '../Admin/ImmobileDetail/ImmobileDetail.tsx'
   // createRoot(document.getElementById('root')!).render(
   //   <BrowserRouter>
   //     <Routes>
@@ -28,6 +28,10 @@
       path: '/register-properties',
       element: <RegisterProperties />,
     },
+    {
+      path: '/details',
+      element: <Details/>
+    }
     // {
     //   path: '/app',
     //   element: <NavBar />,
