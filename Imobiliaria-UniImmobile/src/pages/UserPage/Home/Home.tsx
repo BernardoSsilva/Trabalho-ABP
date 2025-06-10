@@ -1,10 +1,10 @@
+import type { ImmobileEntity } from "../../../models/immobile";
 import { NavBar } from "../../../utilities/NavBar";
 import "../Home/homeStyle.css";
-import Casa1  from "../../../assets/ImageImmobileDetails.png"
-import Casa2  from "../../../assets/casa2.png"
-import Casa3  from "../../../assets/casa3.png"
+import { ImmobileCard } from "./cardComponent/Card";
 
 export function Home() {
+    const immobilesList: ImmobileEntity[] = []
     return (
         <>
             <NavBar nameTitle="Seja bem-vindo usuario!" />
@@ -30,27 +30,9 @@ export function Home() {
             </section>
 
             <section className="cards">
-                <div className="card">
-                    <img src={Casa1} alt="Casa 1" />
-                    <div className="cardInfo">
-                        <p>Casa<br />R$500.000</p>
-                        <span className="location">📍 Criciúma</span>
-                    </div>
-                </div>
-                <div className="card">
-                        <img src={Casa2} alt="Casa 2" />
-                    <div className="cardInfo">
-                        <p>Casa<br />R$770.000</p>
-                        <span className="location">📍 Içara</span>
-                    </div>
-                </div>
-                <div className="card">
-                    <img src={Casa3} alt="Casa 3" />
-                    <div className="cardInfo">
-                        <p>Apartamento<br />R$300.000</p>
-                        <span className="location">📍 Siderópolis</span>
-                    </div>
-                </div>
+                {immobilesList.map(e => {
+                    return <ImmobileCard immobileId={e.id} immobileName={e.localityInfo} immobileValue={e.value} immobileCity={e.city} images={e.Images} />
+                })}
             </section>
         </>
     );
