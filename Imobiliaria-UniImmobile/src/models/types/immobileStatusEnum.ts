@@ -1,0 +1,1 @@
+export type ImmobileStatusEnum = 'ACTIVE' | 'INACTIVE' | 'INANALYSIS'
