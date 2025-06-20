@@ -1,5 +1,5 @@
 import type { ImmobileEntity } from "../../../models/immobile";
-import { NavBar } from "../../../utilities/NavBar";
+import { NavBar } from "../../../components/NavBar";
 import "../Home/homeStyle.css";
 import { ImmobileCard } from "./cardComponent/Card";
 

@@ -1,4 +1,5 @@
 import { useState } from "react"
+import "../../../../styles/index.css"
 import logo from "../../../../assets/ApplicationLogo.png"
 export function LoginForm() {
 
@@ -6,31 +7,39 @@ export function LoginForm() {
 
     return (
         <div className="w-1/2 flex flex-col items-center">
-            <form className=" w-3/5 h-1/2 p-5 mt-10 items-center flex flex-col">
-                <img className="w-1/2" src={logo} />
+            <form className=" w-3/5 h-1/2  mt-10 items-center flex flex-col">
+                <img className="w-1/2" src={logo} alt="Logo da aplicação" />
 
                 <div className="mt-5 w-full">
                     <p>
                         Informe seu email
                     </p>
-                    <input className="border border-solid rounded-md w-full" type="email" />
+                    <input className="border border-solid rounded-md w-full" required type="email" />
                 </div>
 
                 <div className="mt-5 w-full">
                     <p>
                         Informe sua senha
                     </p>
-                    <input className="border border-solid rounded-md w-full" type="text" />
+                    <input className="border border-solid rounded-md w-full" required type="password" />
                 </div>
-                <div className="flex flex-row w-full">
-                    <input type="checkbox" className="w-4" value={rememberMe.toString()} onChange={(e) => setRememberMe(e.target.value == "true")} />
-                    <p className="ml-2">
+                <div className="flex justify-start w-full mt-5">
+                    <input
+                        type="checkbox"
+                        checked={rememberMe}
+                        onChange={(e) => setRememberMe(e.target.checked)}
+                    />
+                    <p >
                         lembrar-me
                     </p>
                 </div>
-                <input className="p-2 px-12 bg-(--primary-color) m-2 text-black hover:bg-(--primary-color-hover) transition-colors duration-300 rounded-md" type="submit" value="realizar login" />
+                <button className="p-2 px-12 bg-[var(--primary-color)] mt-7 w-full text-black hover:bg-[var(--primary-color-hover)] transition-colors duration-300 rounded-md">
+                    <p className="font-semibold text-white">
+                        Realizar login
+                    </p>
+                </button>
             </form>
-            <h2 className="text-(--primary-color) mt-30 font-semibold">
+            <h2 className="text-[var(--primary-color)] mt-30 font-semibold">
                 SUA SATISFAÇÃO É O NOSSO LEMA!
             </h2>
         </div>

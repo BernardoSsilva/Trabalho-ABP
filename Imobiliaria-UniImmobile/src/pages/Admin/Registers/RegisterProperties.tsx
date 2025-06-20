@@ -1,4 +1,4 @@
-import { NavBar } from "../../../utilities/NavBar";
+import { NavBar } from "../../../components/NavBar";
 import iconePasta from "../../../assets/iconePasta.png"
 
 export function RegisterProperties() {

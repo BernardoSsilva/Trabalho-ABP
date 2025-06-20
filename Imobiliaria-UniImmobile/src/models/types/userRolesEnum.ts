@@ -1,0 +1,1 @@
+export type UserRolesEnum = 'ADMIN' | 'OPERATOR'
