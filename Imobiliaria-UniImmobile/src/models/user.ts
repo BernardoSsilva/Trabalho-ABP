@@ -1,6 +1,6 @@
 import type { UserRolesEnum } from "./types/userRolesEnum"
 
-export interface User {
+export interface UserEntity {
     id: string
     userName: string
     userEmail: string

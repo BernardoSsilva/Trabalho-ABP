@@ -1,6 +1,6 @@
 import foto from "../../../assets/ImageImmobileDetails.png"
-import type { ImmobileEntity } from "../../../models/immobile";
-import { NavBar } from "../../../components/NavBar";
+import type { ImmobileEntity } from "../../../../../models/immobile";
+import { NavBar } from "../../../../../components/NavBar";
 
 export function Details(immobile?: ImmobileEntity) {
   return (
