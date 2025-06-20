@@ -19,7 +19,7 @@ export function UsersList() {
                     <Plus size={20} color="white" />
                 </button>
             </section>
-            <div className=" w-full h-145 overflow-scroll">
+            <div className=" w-full h-145 overflow-scroll overflow-x-hidden">
 
                 <TableContainer>
                     <Table sx={{ minWidth: 650, maxHeight: 300 }}>
