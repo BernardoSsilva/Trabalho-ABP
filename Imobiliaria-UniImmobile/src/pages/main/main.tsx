@@ -1,25 +1,17 @@
 import ReactDOM from 'react-dom/client'
-import React from 'react'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import '../../styles/index.css'
-// import { BrowserRouter, Route, Routes } from 'react-router'
+import { AdminPages } from '../Admin/adminPages/adminPages.tsx'
+import { LoginPage } from '../Admin/Login/Login.tsx'
+import { Home } from '../UserPage/Home/Home.tsx'
 
-/* CRIANDO OS CAMINHOS DA PAGINA AQUI DENTRO */
-import { App } from '../UserPage/App.tsx'
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <BrowserRouter>
+    <Routes>
+      <Route path='/' element={<Home />} />
+      <Route path='/admin' element={<LoginPage />} />
+      <Route path='/admin/pages' element={<AdminPages />} />
+    </Routes>
+  </BrowserRouter>
+)
 
-// import { LoginPage } from '../Admin/Login/Login.tsx'
-
-// createRoot(document.getElementById('root')!).render(
-//   <BrowserRouter>
-//     <Routes>
-//       <Route path='/' element={<App />} />
-//       <Route path='/admin' element={<LoginPage />} />
-//     </Routes>
-//   </BrowserRouter>
-// )
-
-
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
