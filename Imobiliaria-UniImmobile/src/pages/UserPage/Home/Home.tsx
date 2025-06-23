@@ -1,8 +1,7 @@
 import { NavBar } from "../../../components/NavBar";
 import { exampleImmobile } from "../../../utilities/exampleData";
 import "../Home/homeStyle.css";
-import { ImmobileCard } from "./cardComponent/Card";
-
+import {ImmobileCard} from "./cardComponent/Card"
 export function Home() {
     return (
         <>
@@ -30,7 +29,7 @@ export function Home() {
 
             <section className="cards">
                 {exampleImmobile.map(e => {
-                    return <ImmobileCard immobileId={e.id} immobileName={e.localityInfo} immobileValue={e.value} immobileCity={e.city} images={e.Images} />
+                    return <ImmobileCard immobile={e} />
                 })}
             </section>
         </>
