@@ -4,6 +4,7 @@ import '../../styles/index.css'
 import { AdminPages } from '../Admin/adminPages/adminPages.tsx'
 import { LoginPage } from '../Admin/Login/Login.tsx'
 import { Home } from '../UserPage/Home/Home.tsx'
+import ImmobileDetail from "../UserPage/ImmobileDetail/ImmobileDetail"; 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
@@ -11,7 +12,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <Route path='/' element={<Home />} />
       <Route path='/admin' element={<LoginPage />} />
       <Route path='/admin/pages' element={<AdminPages />} />
+      <Route path="/immobile/:id" element={<ImmobileDetail />} />
     </Routes>
   </BrowserRouter>
 )
-
