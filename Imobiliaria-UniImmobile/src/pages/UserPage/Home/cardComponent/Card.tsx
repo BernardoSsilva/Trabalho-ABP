@@ -1,19 +1,35 @@
-import type { ImageEntity } from "../../../../models/image"
+import { useNavigate } from "react-router-dom";
+import type { ImmobileEntity } from "../../../../models/immobile";
+import "../../Home/homeStyle.css";
 
-type Props = {
-    immobileId: string
-    immobileName: string
-    immobileValue: number
-    immobileCity: string
-    images: ImageEntity[]
+interface CardProps {
+  immobile: ImmobileEntity;
 }
 
-export function ImmobileCard({ immobileId, immobileCity, immobileName, immobileValue, images }: Props) {
-    return (<div className="card">
-        <img src={images[0].imageUrl} alt="Casa 1" />
-        <div className="cardInfo">
-            <p>{immobileName}<br />R${immobileValue}</p>
-            <span className="location">📍 {immobileCity}</span>
-        </div>
-    </div>)
+export function Card({ immobile }: CardProps) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/immobile/${immobile.id}`);
+  };
+
+  return (
+    <div className="card" onClick={handleClick}>
+      <img 
+        src={immobile.localLink} 
+        alt={`Imóvel ${immobile.immobileDescription}`}
+        className="card-image" 
+      />
+      <div className="cardInfo">
+        <h3>{immobile.immobileDescription}</h3>
+        <p className="location">{immobile.city} - {immobile.state}</p>
+        <p>
+          {new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+          }).format(immobile.value)}
+        </p>
+      </div>
+    </div>
+  );
 }
