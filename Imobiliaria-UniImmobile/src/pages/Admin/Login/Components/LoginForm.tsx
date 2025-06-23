@@ -1,7 +1,9 @@
 import { useState } from "react"
 import "../../../../styles/index.css"
 import logo from "../../../../assets/ApplicationLogo.png"
+import { useNavigate } from "react-router";
 export function LoginForm() {
+  const navigate = useNavigate();
 
     const [rememberMe, setRememberMe] = useState(false)
 
@@ -33,7 +35,7 @@ export function LoginForm() {
                         lembrar-me
                     </p>
                 </div>
-                <button className="p-2 px-12 bg-[var(--primary-color)] mt-7 w-full text-black hover:bg-[var(--primary-color-hover)] transition-colors duration-300 rounded-md">
+                <button  onClick={() =>   navigate(`/admin/pages`)} className="p-2 px-12 bg-[var(--primary-color)] mt-7 w-full text-black hover:bg-[var(--primary-color-hover)] transition-colors duration-300 rounded-md">
                     <p className="font-semibold text-white">
                         Realizar login
                     </p>

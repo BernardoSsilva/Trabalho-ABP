@@ -6,7 +6,7 @@ interface CardProps {
   immobile: ImmobileEntity;
 }
 
-export function Card({ immobile }: CardProps) {
+export function ImmobileCard({ immobile }: CardProps) {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -16,7 +16,7 @@ export function Card({ immobile }: CardProps) {
   return (
     <div className="card" onClick={handleClick}>
       <img 
-        src={immobile.localLink} 
+        src={immobile.Images[0].imageUrl} 
         alt={`Imóvel ${immobile.immobileDescription}`}
         className="card-image" 
       />
