@@ -67,9 +67,6 @@ A pagina do cliente será acessível sem autenticação, onde o usuário poderá
 ## Padronização do projeto
 
 lingua de utilização: Inglês
-
-### Definições
-
 Variaveis: **camelCase 🐫**  
 Funções e objetos: **PascalCase**
 
