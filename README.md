@@ -61,8 +61,8 @@ A pagina do cliente será acessível sem autenticação, onde o usuário poderá
 
 - Gerenciamento de usuários;
 - Gerenciamento de registros de imóveis;
-- Gerenciamento de imagens;
-- Redirecionamento para aplicativos de terceiros;
+- Visualização de Imóveis
+- Visualização de Usuários
 
 ## Padronização do projeto
 
