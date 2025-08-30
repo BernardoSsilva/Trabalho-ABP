@@ -64,9 +64,12 @@ export function LoginForm() {
         <>
             <Backdrop
                 open={isLoading}
-                onClick={closeLoading}
             >
-                <CircularProgress color="inherit" />
+                <div className="bg-white flex border-(--primary-color) border-2 rounded-xl p-4 items-center justify-center gap-1">
+
+                    <CircularProgress color="inherit" size={24} />
+                    Processando Dados
+                </div>
             </Backdrop>
             <div className="w-1/2 flex flex-col items-center">
 

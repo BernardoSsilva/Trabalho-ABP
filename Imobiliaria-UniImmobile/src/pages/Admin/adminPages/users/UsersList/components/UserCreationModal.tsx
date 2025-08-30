@@ -137,6 +137,8 @@ export function UserCreationModal({ isModalOpen, setIsModalOpen, userId }: Props
                 service.createNewUser(newUser);
             }
 
+            alert("Usuário criado com sucesso")
+
         } catch (error) {
             if ((error as AxiosResponse).status == 400) {
                 setErrorMessage((error as AxiosResponse).data)

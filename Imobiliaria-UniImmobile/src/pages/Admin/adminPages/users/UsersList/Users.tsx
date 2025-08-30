@@ -1,4 +1,4 @@
-import { Pagination, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Backdrop, CircularProgress, Pagination, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
 import timezone from "dayjs/plugin/timezone";
@@ -21,22 +21,39 @@ export function UsersList() {
     const [usersData, setUsersData] = useState<UserEntity[]>([]);
     const [atualPage, setAtualPage] = useState<number>(1);
 
-    const fetchUsers = async () => {
-        const service = new UserServices();
+    const [isLoading, setIsLoading] = useState(false);
 
-        const responseData = (await service.listUsers(10, atualPage))
-        console.log(responseData)
-        setUsersData(responseData.users);
-        setPagesNumber(responseData.pageNumber);
-        console.log(pagesNumber)
+    const fetchUsers = async () => {
+        setIsLoading(true)
+
+        try {
+            const service = new UserServices();
+
+            const responseData = (await service.listUsers(10, atualPage))
+            setUsersData(responseData.users);
+            setPagesNumber(responseData.pageNumber);
+        } catch (error) {
+            alert("Erro de servidor")
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     useEffect(() => {
         fetchUsers();
-    }, [atualPage]);
+    }, [atualPage, isModalOpen]);
 
     return (
         <div className="mt-3 w-[98%] h-[20%]">
+            <Backdrop
+                open={isLoading}
+            >
+                <div className="bg-white flex border-(--primary-color) border-2 rounded-xl p-4 items-center justify-center gap-1">
+
+                    <CircularProgress color="inherit" size={24} />
+                    Carregando Dados
+                </div>
+            </Backdrop>
             <UserCreationModal isModalOpen={isModalOpen} setIsModalOpen={(value) => setIsModalOpen(value)} userId={selectedUserId} />
 
             <section className="flex justify-end w-full border-b-2 border-b-[var(--primary-color)] p-2">
