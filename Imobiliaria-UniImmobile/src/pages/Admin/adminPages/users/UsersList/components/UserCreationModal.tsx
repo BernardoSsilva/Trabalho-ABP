@@ -1,29 +1,28 @@
 import {
-    TextField,
-    Select,
-    MenuItem,
-    InputLabel,
-    FormControl,
+    Alert,
     Button,
-    Modal,
+    FormControl,
     IconButton,
     InputAdornment,
+    InputLabel,
+    MenuItem,
+    Modal,
     OutlinedInput,
-    Alert,
+    Select,
+    TextField,
 } from "@mui/material";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import type { AxiosResponse } from "axios";
+import dayjs, { Dayjs } from "dayjs";
+import { Eye, EyeClosed } from "lucide-react";
+import { useEffect, useState } from "react";
+import type { UserCreationDto } from "../../../../../../models/DTOs/userCreationDto";
 import { UserRolesEnum } from "../../../../../../models/types/userRolesEnum";
 import type { UserEntity } from "../../../../../../models/user";
-import { usersList } from "../../../../../../utilities/exampleData";
-import { v4 as uuidv4 } from 'uuid';
-import { useEffect, useState } from "react";
 import { UserServices } from "../../../../../../services/user-services";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs, { Dayjs } from "dayjs";
-import { EyeClosed, Eye } from "lucide-react";
-import type { UserCreationDto } from "../../../../../../models/DTOs/userCreationDto";
-import type { AxiosResponse } from "axios";
+import { usersList } from "../../../../../../utilities/exampleData";
 
 type Props = {
     isModalOpen: boolean

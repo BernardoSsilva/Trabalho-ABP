@@ -1,8 +1,8 @@
-import type { Axios, AxiosResponse } from "axios";
+import type { AxiosResponse } from "axios";
 import type { AuthenticationDto } from "../models/DTOs/authenticationDto";
-import { server } from "./Axios";
-import type { PaginatedUserResponse } from "../models/responseInterfaces/PaginatedUserResponse";
 import type { UserCreationDto } from "../models/DTOs/userCreationDto";
+import type { PaginatedUserResponse } from "../models/responseInterfaces/PaginatedUserResponse";
+import { server } from "./Axios";
 
 export class UserServices {
 

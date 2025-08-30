@@ -97,7 +97,7 @@ export function UsersList() {
             <Pagination
                 page={atualPage}
                 count={pagesNumber}
-                onChange={(event: React.ChangeEvent<unknown>, value: number) => {
+                onChange={(e: React.ChangeEvent<unknown>, value: number) => {
                     setAtualPage(value);
                 }}
             />

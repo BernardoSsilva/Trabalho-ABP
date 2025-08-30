@@ -1,11 +1,10 @@
 import { Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { DoorOpen, House, User } from 'lucide-react';
 import { useState } from "react";
-import logo from "../../../assets/NavBarLogo.png";
-import { UsersList } from "./users/UsersList/Users";
-import { ImmobileList } from "./immobiles/ImmobilesList/Immobiles";
 import { useNavigate } from "react-router";
 import { NavBar } from "../../../components/NavBar";
+import { ImmobileList } from "./immobiles/ImmobilesList/Immobiles";
+import { UsersList } from "./users/UsersList/Users";
 const screensEnum = {
     immobileScreen: "immobileScreen",
     usersScreen: "usersScreen"
