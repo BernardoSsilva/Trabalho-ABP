@@ -1,29 +1,23 @@
 import { Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import { House, User } from 'lucide-react';
+import { DoorOpen, House, User } from 'lucide-react';
 import { useState } from "react";
-import logo from "../../../assets/ApplicationLogo.png";
+import logo from "../../../assets/NavBarLogo.png";
 import { UsersList } from "./users/UsersList/Users";
 import { ImmobileList } from "./immobiles/ImmobilesList/Immobiles";
+import { useNavigate } from "react-router";
+import { NavBar } from "../../../components/NavBar";
 const screensEnum = {
     immobileScreen: "immobileScreen",
     usersScreen: "usersScreen"
 }
 type ScreensEnum = keyof typeof screensEnum;
 export function AdminPages() {
+    const navigator = useNavigate();
 
     const [activeScreen, setActiveScreen] = useState<ScreensEnum>("immobileScreen")
     return (
         <div className="w-screen h-screen " >
-            <div className="bg-[var(--primary-color)] z-10 p-4 w-screen h-25 top-0 ">
-                <div className="flex items-center justify-between w-auto">
-                    <img className="w-32 h-20" src={logo} alt="" />
-                    <div>
-                        <h3 className="text-[var(--color-font-title)] font-semibold text-[25px] drop-shadow shadow-gray-800">
-                            {activeScreen == "immobileScreen" ? "imóveis" : "usuários"}
-                        </h3>
-                    </div>
-                </div>
-            </div>
+            <NavBar nameTitle={activeScreen == "immobileScreen" ? "imóveis" : "usuários"} />
             <div className="flex ">
                 <Drawer open variant="persistent" anchor="left" sx={{
                     width: "12rem",
@@ -50,6 +44,17 @@ export function AdminPages() {
                                 <ListItemText primary={"Usuários"} />
                             </ListItemButton>
                         </ListItem >
+                        <ListItem>
+                            <ListItemButton onClick={() => {
+                                localStorage.removeItem("token")
+                                navigator("/admin")
+                            }}>
+                                <ListItemIcon>
+                                    <DoorOpen color="red" size={24} />
+                                </ListItemIcon>
+                                <ListItemText primary={"Logout"} color="red" />
+                            </ListItemButton>
+                        </ListItem>
                     </List>
                 </Drawer>
                 <main className="flex-1">

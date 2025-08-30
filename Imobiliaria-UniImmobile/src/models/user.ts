@@ -4,9 +4,9 @@ export interface UserEntity {
     id: string
     userName: string
     userEmail: string
-    userRole: UserRolesEnum
+    role: UserRolesEnum
     phone: string
     bornDate: Date
     CreatedAt: Date
-    civilState: string
+    password: string
 }
