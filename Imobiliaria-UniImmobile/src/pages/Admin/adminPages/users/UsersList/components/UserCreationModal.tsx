@@ -19,6 +19,7 @@ import dayjs, { Dayjs } from "dayjs";
 import { Eye, EyeClosed } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { UserCreationDto } from "../../../../../../models/DTOs/userCreationDto";
+import type { UserUpdateDto } from "../../../../../../models/DTOs/userUpdateDto";
 import { UserRolesEnum } from "../../../../../../models/types/userRolesEnum";
 import type { UserEntity } from "../../../../../../models/user";
 import { UserServices } from "../../../../../../services/user-services";
@@ -33,7 +34,7 @@ type Props = {
 export function UserCreationModal({ isModalOpen, setIsModalOpen, userId }: Props) {
     const [user, setUser] = useState<UserEntity>()
 
-    const [errorMessage, setErrorMessage] = useState(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const [userEmail, setUserEmail] = useState(user ? user.userEmail : "");
     const [userRole, setUserRole] = useState<UserRolesEnum>(user ? user.role : UserRolesEnum.ADMIN);
@@ -43,9 +44,20 @@ export function UserCreationModal({ isModalOpen, setIsModalOpen, userId }: Props
     const [userPassword, setUserPassword] = useState("");
     const [userPasswordConfirmation, setUserPasswordConfirmation] = useState("")
 
+    const fetchUser = async () => {
+        const service = new UserServices();
+
+        if (userId) {
+
+            setUser((await service.findUser(userId)).data);
+        } else {
+            setUser(undefined)
+        }
+
+    }
 
     useEffect(() => {
-        setUser(usersList.find(u => u.id == userId))
+        fetchUser();
     }, [isModalOpen, userId])
 
 
@@ -109,23 +121,51 @@ export function UserCreationModal({ isModalOpen, setIsModalOpen, userId }: Props
 
 
     const saveUser = async () => {
+        const service = new UserServices();
+
         if (!validateForm()) {
             return;
         }
-        try {
 
-            const service = new UserServices();
+        if (userId) {
             if (userId) {
+                try {
 
-                const existingUser = (await service.findUser(userId)).data;
-                if (existingUser) {
+                    const existingUser = (await service.findUser(userId)).data;
                     existingUser.userEmail = userEmail;
                     existingUser.role = userRole;
                     existingUser.phone = userPhone;
-                    existingUser.bornDate = userBornDate;
+                    existingUser.bornDate = userBornDate!.toDate();
                     existingUser.userName = userName;
+
+                    const data: UserUpdateDto = {
+                        BornDate: existingUser.bornDate,
+                        UserName: existingUser.userName,
+                        Phone: existingUser.phone,
+                        Role: existingUser.Role == UserRolesEnum.ADMIN ? 0 : 1,
+                        UserEmail: existingUser.userEmail
+                    }
+
+                    console.log(data)
+
+                    await service.updateUserData(data, userId)
+
+                    alert("Usuário alterado com sucesso")
+                } catch (error) {
+                    if ((error as AxiosResponse).status == 400) {
+                        setErrorMessage((error as AxiosResponse).data)
+                    } else if ((error as AxiosResponse).status == 401) {
+                        setErrorMessage((error as AxiosResponse).data.toString())
+                    } else {
+                        setErrorMessage("Erro desconhecido!")
+                    }
+                } finally {
+                    setIsModalOpen(false);
+
                 }
-            } else {
+            }
+        } else {
+            try {
                 const newUser: UserCreationDto = {
                     UserEmail: userEmail,
                     Role: userRole == UserRolesEnum.ADMIN ? 0 : 1,
@@ -134,19 +174,22 @@ export function UserCreationModal({ isModalOpen, setIsModalOpen, userId }: Props
                     UserName: userName,
                     Password: userPassword
                 };
-                service.createNewUser(newUser);
+
+                await service.createNewUser(newUser);
+                alert("Usuário criado com sucesso")
+
+            } catch (error) {
+                if ((error as AxiosResponse).status == 400) {
+                    setErrorMessage((error as AxiosResponse).data)
+                } else if ((error as AxiosResponse).status == 401) {
+                    setErrorMessage((error as AxiosResponse).data.toString())
+                } else {
+                    setErrorMessage("Erro desconhecido!")
+                }
+            } finally {
+                setIsModalOpen(false);
             }
 
-            alert("Usuário criado com sucesso")
-
-        } catch (error) {
-            if ((error as AxiosResponse).status == 400) {
-                setErrorMessage((error as AxiosResponse).data)
-            } else if ((error as AxiosResponse).status == 401) {
-                setErrorMessage((error as AxiosResponse).data.toString())
-            }
-        } finally {
-            setIsModalOpen(false);
 
         }
         setTimeout(() => {
@@ -244,6 +287,7 @@ export function UserCreationModal({ isModalOpen, setIsModalOpen, userId }: Props
                                 label="Data de Nascimento"
                                 value={userBornDate}
                                 onChange={(newValue) => setUserBornDate(newValue)}
+                                format="DD/MM/YYYY"
                                 slotProps={{
                                     textField: {
                                         fullWidth: true,

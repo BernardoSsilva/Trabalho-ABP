@@ -3,13 +3,20 @@ import type { AuthenticationDto } from "../models/DTOs/authenticationDto";
 import type { UserCreationDto } from "../models/DTOs/userCreationDto";
 import type { PaginatedUserResponse } from "../models/responseInterfaces/PaginatedUserResponse";
 import { server } from "./Axios";
+import type { UserUpdateDto } from "../models/DTOs/userUpdateDto";
 
 export class UserServices {
 
     async createNewUser(userObject: UserCreationDto) {
-        console.log(userObject)
-
         await server.post("/Users", userObject)
+    }
+
+    async updateUserData(userObject: UserUpdateDto, userId: string) {
+        await server.put(`/Users/${userId}`, userObject)
+    }
+
+    async deleteUserData(userId: string) {
+        await server.delete(`/Users/${userId}`)
     }
 
     async userLogin(authenticationObject: AuthenticationDto): Promise<AxiosResponse> {

@@ -16,9 +16,7 @@ export function LoginForm() {
     const services = new UserServices();
     const [isLoading, setIsLoading] = useState(false);
 
-    function closeLoading() {
-        setIsLoading(false)
-    }
+
     async function executeLogin() {
         setIsLoading(true);
 

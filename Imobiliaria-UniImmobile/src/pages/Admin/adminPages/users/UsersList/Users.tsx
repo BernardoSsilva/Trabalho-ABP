@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import type { UserEntity } from "../../../../../models/user";
 import { UserServices } from "../../../../../services/user-services";
 import { UserCreationModal } from "./components/UserCreationModal";
+import { UserDeleteDialog } from "./components/UserDeleteDialog";
 
 
 dayjs.locale("pt-br");
@@ -16,6 +17,8 @@ dayjs.extend(timezone);
 
 export function UsersList() {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false)
+
     const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
     const [pagesNumber, setPagesNumber] = useState<number>(0);
     const [usersData, setUsersData] = useState<UserEntity[]>([]);
@@ -41,7 +44,7 @@ export function UsersList() {
 
     useEffect(() => {
         fetchUsers();
-    }, [atualPage, isModalOpen]);
+    }, [atualPage, isModalOpen, isDeleteModalOpen]);
 
     return (
         <div className="mt-3 w-[98%] h-[20%]">
@@ -54,7 +57,9 @@ export function UsersList() {
                     Carregando Dados
                 </div>
             </Backdrop>
+
             <UserCreationModal isModalOpen={isModalOpen} setIsModalOpen={(value) => setIsModalOpen(value)} userId={selectedUserId} />
+            <UserDeleteDialog isOpen={isDeleteModalOpen} setIsOpen={setIsDeleteModalOpen} userId={selectedUserId ?? ""} />
 
             <section className="flex justify-end w-full border-b-2 border-b-[var(--primary-color)] p-2">
                 <button onClick={() => setIsModalOpen(true)} className="p-3 bg-blue-400 rounded-full hover:bg-blue-500 transition-all duration-500">
@@ -97,7 +102,7 @@ export function UsersList() {
 
                                             <button className="bg-red-500 p-2 rounded-md hover:bg-red-600 transition-colors duration-200 cursor-pointer" onClick={() => {
                                                 setSelectedUserId(row.id)
-                                                console.log("delete user" + row.id)
+                                                setIsDeleteModalOpen(true)
                                             }}>
                                                 <Trash size={24} color="white" />
                                             </button>
