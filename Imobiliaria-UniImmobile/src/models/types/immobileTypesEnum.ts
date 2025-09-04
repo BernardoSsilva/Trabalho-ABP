@@ -1,3 +1,4 @@
-export type ImmobileTypesEnum =
-    'LAND' |
-    'HABITATION'
+export enum ImmobileTypesEnum {
+    LAND = "LAND",
+    HABITATION = "HABITATION"
+}
