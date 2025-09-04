@@ -21,7 +21,6 @@ export function LoginForm() {
         setIsLoading(true);
 
         try {
-            console.log(email, password)
             const response: AxiosResponse = await services.userLogin({ Email: email, Password: password });
 
             if (response.status === 200)
