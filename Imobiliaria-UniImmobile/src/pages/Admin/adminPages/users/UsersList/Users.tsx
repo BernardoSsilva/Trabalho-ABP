@@ -58,8 +58,8 @@ export function UsersList() {
                 </div>
             </Backdrop>
 
-            <UserCreationModal isModalOpen={isModalOpen} setIsModalOpen={(value) => setIsModalOpen(value)} userId={selectedUserId} />
-            <UserDeleteDialog isOpen={isDeleteModalOpen} setIsOpen={setIsDeleteModalOpen} userId={selectedUserId ?? ""} />
+            <UserCreationModal isModalOpen={isModalOpen} setIsModalOpen={(value) => setIsModalOpen(value)} userId={selectedUserId} setSelectedUserId={setSelectedUserId} />
+            <UserDeleteDialog isOpen={isDeleteModalOpen} setIsOpen={setIsDeleteModalOpen} userId={selectedUserId ?? ""} setSelectedUserId={setSelectedUserId} />
 
             <section className="flex justify-end w-full border-b-2 border-b-[var(--primary-color)] p-2">
                 <button onClick={() => setIsModalOpen(true)} className="p-3 bg-blue-400 rounded-full hover:bg-blue-500 transition-all duration-500">

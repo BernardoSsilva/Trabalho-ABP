@@ -23,15 +23,15 @@ import type { UserUpdateDto } from "../../../../../../models/DTOs/userUpdateDto"
 import { UserRolesEnum } from "../../../../../../models/types/userRolesEnum";
 import type { UserEntity } from "../../../../../../models/user";
 import { UserServices } from "../../../../../../services/user-services";
-import { usersList } from "../../../../../../utilities/exampleData";
 
 type Props = {
     isModalOpen: boolean
     setIsModalOpen: (value: boolean) => void
     userId: string | null
+    setSelectedUserId: (value: string | null) => void
 }
 
-export function UserCreationModal({ isModalOpen, setIsModalOpen, userId }: Props) {
+export function UserCreationModal({ isModalOpen, setIsModalOpen, userId, setSelectedUserId }: Props) {
     const [user, setUser] = useState<UserEntity>()
 
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -146,7 +146,6 @@ export function UserCreationModal({ isModalOpen, setIsModalOpen, userId }: Props
                         UserEmail: existingUser.userEmail
                     }
 
-                    console.log(data)
 
                     await service.updateUserData(data, userId)
 
@@ -161,7 +160,7 @@ export function UserCreationModal({ isModalOpen, setIsModalOpen, userId }: Props
                     }
                 } finally {
                     setIsModalOpen(false);
-
+                    setSelectedUserId(null)
                 }
             }
         } else {

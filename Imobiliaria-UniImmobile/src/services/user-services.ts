@@ -21,8 +21,8 @@ export class UserServices {
 
     async userLogin(authenticationObject: AuthenticationDto): Promise<AxiosResponse> {
         const response = await server.post("/Users/Login", authenticationObject)
-        server.defaults.headers.common['Authorization'] = response.data;
-
+        server.defaults.headers.common['Authorization'] = "Bearer " + response.data.token;
+        localStorage.setItem("userId", response.data.user.id)
         return response;
     }
 
@@ -34,7 +34,6 @@ export class UserServices {
             }
         });
 
-        console.log(response)
         return response.data;
     }
 

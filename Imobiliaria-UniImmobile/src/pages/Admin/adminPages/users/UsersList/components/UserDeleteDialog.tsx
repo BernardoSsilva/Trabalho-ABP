@@ -5,16 +5,19 @@ type Props = {
     isOpen: boolean,
     setIsOpen: (value: boolean) => void,
     userId: string
+    setSelectedUserId: (value: string | null) => void
+
 }
 
 
-export function UserDeleteDialog({ isOpen, setIsOpen, userId }: Props) {
+export function UserDeleteDialog({ isOpen, setIsOpen, userId, setSelectedUserId }: Props) {
 
     const confirmExclusion = async () => {
         const service = new UserServices();
 
         await service.deleteUserData(userId);
         setIsOpen(false)
+        setSelectedUserId(null)
     }
 
     return (
@@ -37,7 +40,10 @@ export function UserDeleteDialog({ isOpen, setIsOpen, userId }: Props) {
                     Confirmar
                 </Button>
                 <Button
-                    onClick={() => setIsOpen(false)}
+                    onClick={() => {
+                        setIsOpen(false)
+                        setSelectedUserId(null)
+                    }}
                     variant="contained"
                     color="info"
                 >
