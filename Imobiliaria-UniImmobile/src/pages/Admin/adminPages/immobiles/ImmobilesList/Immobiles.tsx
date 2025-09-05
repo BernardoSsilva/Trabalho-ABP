@@ -3,13 +3,14 @@ import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
-import { Pen, Plus, Trash } from "lucide-react";
+import { Images, Pen, Plus, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { ImmobilesShortData } from "../../../../../models/responseInterfaces/ImmobilesShortData";
 import { BrazilianState } from "../../../../../models/types/brazilianStatesEnum";
 import { ImmobilesServices } from "../../../../../services/immobiles-services";
 import { ImmobilesCreationModal } from "./components/ImmobileCreationModal";
 import { ImmobileDeleteDialog } from "./components/ImmobileDeleteDialog";
+import { GalleryModal } from "./components/GalleryModal";
 
 dayjs.locale("pt-br");
 dayjs.extend(utc);
@@ -21,13 +22,16 @@ function formatCurrency(value: number) {
 
 
 export function ImmobileList() {
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
     const [pagesNumber, setPagesNumber] = useState<number>(0);
     const [atualPage, setAtualPage] = useState<number>(1);
     const [immobilesData, setImmobilesData] = useState<ImmobilesShortData[]>([])
     const [selectedImmobileId, setSelectedImmobileId] = useState<string | null>(null)
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false)
     const [isLoading, setIsLoading] = useState(false);
+
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false)
+    const [isGalleryModalOpen, setIsGalleryModalOpen] = useState<boolean>(false);
+
 
     const fetchImmobilesList = async () => {
         setIsLoading(true)
@@ -63,7 +67,7 @@ export function ImmobileList() {
 
             <ImmobilesCreationModal isModalOpen={isModalOpen} selectedImmobileId={selectedImmobileId} setIsModalOpen={setIsModalOpen} setSelectedImmobileId={setSelectedImmobileId} />
             <ImmobileDeleteDialog isOpen={isDeleteModalOpen} setIsOpen={setIsDeleteModalOpen} immobileId={selectedImmobileId} setSelectedImmobileId={setSelectedImmobileId} />
-
+            <GalleryModal immobileId={selectedImmobileId} setIsOpen={setIsGalleryModalOpen} isOpen={isGalleryModalOpen} />
             <section className="flex justify-end w-full border-b-2 border-b-[var(--primary-color)] p-2">
                 <button onClick={() => setIsModalOpen(true)} className="p-3 bg-blue-400 rounded-full hover:bg-blue-500 transition-all duration-500">
                     <Plus size={20} color="white" />
@@ -107,6 +111,13 @@ export function ImmobileList() {
                                     </TableCell>
                                     <TableCell>
                                         <div className="flex flex-row gap-1.5">
+                                            <button className="bg-blue-500 p-2 rounded-md hover:bg-blue-600 transition-colors duration-200 cursor-pointer" onClick={() => {
+                                                setSelectedImmobileId(row.id)
+                                                setIsGalleryModalOpen(true)
+                                            }}>
+                                                <Images size={24} color="white" />
+                                            </button>
+
                                             <button className="bg-amber-500 p-2 rounded-md hover:bg-amber-600 transition-colors duration-200 cursor-pointer" onClick={() => {
                                                 setSelectedImmobileId(row.id)
                                                 setIsModalOpen(true)
@@ -120,6 +131,8 @@ export function ImmobileList() {
                                             }}>
                                                 <Trash size={24} color="white" />
                                             </button>
+
+
                                         </div>
                                     </TableCell>
                                 </TableRow>
