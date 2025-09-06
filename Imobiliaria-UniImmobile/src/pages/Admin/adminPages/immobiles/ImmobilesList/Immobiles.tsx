@@ -11,6 +11,7 @@ import { ImmobilesServices } from "../../../../../services/immobiles-services";
 import { ImmobilesCreationModal } from "./components/ImmobileCreationModal";
 import { ImmobileDeleteDialog } from "./components/ImmobileDeleteDialog";
 import { GalleryModal } from "./components/GalleryModal";
+import { ImmobileTypesEnum } from "../../../../../models/types/immobileTypesEnum";
 
 dayjs.locale("pt-br");
 dayjs.extend(utc);
@@ -93,7 +94,7 @@ export function ImmobileList() {
                             {immobilesData.length > 0 && immobilesData.map((row) => (
                                 <TableRow key={row.id}>
                                     <TableCell>
-                                        {row.immobileType == 1 ? "Imóvel" : "Terreno"}
+                                        {Object.values(ImmobileTypesEnum)[parseInt(row.immobileType)]}
                                     </TableCell>
                                     <TableCell>{row.postalCode}</TableCell>
                                     <TableCell>{row.city}</TableCell>

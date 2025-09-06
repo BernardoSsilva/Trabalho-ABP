@@ -4,7 +4,7 @@ import type { ImmobileTypesEnum } from "../types/immobileTypesEnum"
 export interface ImmobilesShortData {
     id: string
     localityInfo: string
-    immobileType: number
+    immobileType: ImmobileTypesEnum
     value: number
     postalCode: string
     state: BrazilianState

@@ -194,7 +194,7 @@ export function ImmobilesCreationModal(
 
                             {/* Localização */}
                             <TextField
-                                label="Informações da Localização"
+                                label="Titulo do imóvel"
                                 value={localityInfo}
                                 onChange={(e) => setLocalityInfo(e.target.value)}
                                 fullWidth
