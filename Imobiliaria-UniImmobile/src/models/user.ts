@@ -7,6 +7,6 @@ export interface UserEntity {
     role: UserRolesEnum
     phone: string
     bornDate: Date
-    CreatedAt: Date
+    createdAt: Date
     password: string
 }

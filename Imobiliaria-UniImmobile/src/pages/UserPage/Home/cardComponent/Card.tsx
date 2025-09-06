@@ -1,13 +1,30 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import type { ImmobileEntity } from "../../../../models/immobile";
+import type { ImageEntity } from "../../../../models/image";
+import type { ImmobilesShortData } from "../../../../models/responseInterfaces/ImmobilesShortData";
+import { ImageServices } from "../../../../services/images-services";
 import "../../Home/homeStyle.css";
 
 interface CardProps {
-  immobile: ImmobileEntity;
+  immobile: ImmobilesShortData;
 }
 
 export function ImmobileCard({ immobile }: CardProps) {
   const navigate = useNavigate();
+  const services = new ImageServices();
+  const [immobileFirstImage, setImmobileFirstImage] = useState<ImageEntity | null>(null);
+
+  useEffect(() => {
+    if (immobile.id) {
+      fetchImages();
+    }
+  }, [immobile.id]);
+
+
+  const fetchImages = async () => {
+    setImmobileFirstImage((await services.ListImages(immobile.id))[0])
+    console.log(immobileFirstImage)
+  }
 
   const handleClick = () => {
     navigate(`/immobile/${immobile.id}`);
@@ -15,13 +32,14 @@ export function ImmobileCard({ immobile }: CardProps) {
 
   return (
     <div className="card" onClick={handleClick}>
-      <img 
-        src={immobile.Images[0].imageUrl} 
-        alt={`Imóvel ${immobile.immobileDescription}`}
-        className="card-image" 
+
+      <img
+        className="card-image"
+        src={immobileFirstImage?.imageUrl}
+        alt={`Imóvel ${immobileFirstImage?.imageUrl}`}
       />
       <div className="cardInfo">
-        <h3>{immobile.immobileDescription}</h3>
+        <h3>{immobile.localityInfo}</h3>
         <p className="location">{immobile.city} - {immobile.state}</p>
         <p>
           {new Intl.NumberFormat('pt-BR', {

@@ -4,6 +4,7 @@ import type { UserCreationDto } from "../models/DTOs/userCreationDto";
 import type { PaginatedUserResponse } from "../models/responseInterfaces/PaginatedUserResponse";
 import { server } from "./Axios";
 import type { UserUpdateDto } from "../models/DTOs/userUpdateDto";
+import type { UserEntity } from "../models/user";
 
 export class UserServices {
 
@@ -37,8 +38,8 @@ export class UserServices {
         return response.data;
     }
 
-    async findUser(userId: string): Promise<AxiosResponse> {
+    async findUser(userId: string): Promise<UserEntity> {
         const response = await server.get(`/Users/${userId}`);
-        return response;
+        return response.data;
     }
 }
