@@ -1,10 +1,12 @@
 import { Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { DoorOpen, House, User } from 'lucide-react';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { NavBar } from "../../../components/NavBar";
 import { ImmobileList } from "./immobiles/ImmobilesList/Immobiles";
 import { UsersList } from "./users/UsersList/Users";
+import { UserServices } from "../../../services/user-services";
+import { UserRolesEnum } from "../../../models/types/userRolesEnum";
 const screensEnum = {
     immobileScreen: "immobileScreen",
     usersScreen: "usersScreen"
@@ -13,7 +15,24 @@ type ScreensEnum = keyof typeof screensEnum;
 export function AdminPages() {
     const navigator = useNavigate();
 
-    const [activeScreen, setActiveScreen] = useState<ScreensEnum>("immobileScreen")
+    const [activeScreen, setActiveScreen] = useState<ScreensEnum>("usersScreen")
+
+    const [userIsAdmin, setUserIsAdmin] = useState(true);
+    const service = new UserServices();
+
+    const checkUserIsAdmin = async () => {
+        const user = await service.findUser(localStorage.getItem("userId") ?? "")
+
+        if (user) {
+            setUserIsAdmin(user.role == UserRolesEnum.ADMIN)
+        } else {
+            localStorage.removeItem("token")
+            navigator("/admin")
+        }
+    }
+    useEffect(() => {
+        checkUserIsAdmin()
+    }, [])
     return (
         <div className="w-screen h-screen " >
             <NavBar nameTitle={activeScreen == "immobileScreen" ? "imóveis" : "usuários"} />
@@ -27,14 +46,16 @@ export function AdminPages() {
                     },
                 }}>
                     <List className="py-5 px-3 pr-7">
-                        <ListItem className="flex mt-2 align-middle">
-                            <ListItemButton onClick={() => setActiveScreen("immobileScreen")}>
-                                <ListItemIcon>
-                                    <House color="black" size={24} />
-                                </ListItemIcon>
-                                <ListItemText primary={"Imóveis"} />
-                            </ListItemButton>
-                        </ListItem >
+                        {userIsAdmin &&
+                            <ListItem className="flex mt-2 align-middle">
+                                <ListItemButton onClick={() => setActiveScreen("immobileScreen")}>
+                                    <ListItemIcon>
+                                        <House color="black" size={24} />
+                                    </ListItemIcon>
+                                    <ListItemText primary={"Imóveis"} />
+                                </ListItemButton>
+                            </ListItem >
+                        }
                         <ListItem className="flex mt-2 align-middle">
                             <ListItemButton onClick={() => setActiveScreen("usersScreen")}>
                                 <ListItemIcon>
