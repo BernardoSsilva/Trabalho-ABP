@@ -4,8 +4,9 @@ import { ImmobileTypesEnum } from "../../../../../../models/types/immobileTypesE
 import { ImmobilesServices } from "../../../../../../services/immobiles-services";
 import { BrazilianState } from "../../../../../../models/types/brazilianStatesEnum";
 import type { ImmobileCreationDto } from "../../../../../../models/DTOs/ImmobileCreationDTO";
-import type { AxiosResponse } from "axios";
+import type { AxiosError } from "axios";
 import type { ImmobileUpdateDto } from "../../../../../../models/DTOs/ImmobileUpdateDto";
+import axios from "axios";
 
 type Props = {
     isModalOpen: boolean,
@@ -43,131 +44,155 @@ export function ImmobilesCreationModal(
             .replace(/(\d{5})(\d)/, "$1-$2")
             .slice(0, 9);
     };
-    const formatCurrency = (value: string) => {
-        const numericValue = value.replace(/\D/g, ""); // Remove tudo que não for número
-        const number = parseFloat(numericValue) / 100; // Divide por 100 para ter centavos
-        if (isNaN(number)) return "";
-        return number.toLocaleString("pt-BR", {
+
+    const formatCurrency = (value: number) => {
+        if (!value) return "";
+        return value.toLocaleString("pt-BR", {
             style: "currency",
             currency: "BRL",
         });
     };
 
+    const fetchCepData = async (cep: string) => {
+        try {
+            const cleanCep = cep.replace(/\D/g, "");
+            if (cleanCep.length !== 8) return;
+
+            const response = await axios.get(`https://brasilapi.com.br/api/cep/v1/${cleanCep}`);
+            const data = response.data;
+
+            setCity(data.city || "");
+            setNeighborhood(data.neighborhood || "");
+            setStreet(data.street || "");
+
+            const stateMap: Record<string, keyof typeof BrazilianState> = {
+                AC: "AC", AL: "AL", AP: "AP", AM: "AM",
+                BA: "BA", CE: "CE", DF: "DF", ES: "ES",
+                GO: "GO", MA: "MA", MT: "MT", MS: "MS",
+                MG: "MG", PA: "PA", PB: "PB", PR: "PR",
+                PE: "PE", PI: "PI", RJ: "RJ", RN: "RN",
+                RS: "RS", RO: "RO", RR: "RR", SC: "SC",
+                SP: "SP", SE: "SE", TO: "TO"
+            };
+
+            const uf = data.state as keyof typeof stateMap;
+            if (uf && BrazilianState[stateMap[uf]]) {
+                setState(BrazilianState[stateMap[uf]]);
+            }
+        } catch (error) {
+            console.error("Erro ao buscar CEP:", error);
+            setErrorMessage("CEP inválido ou não encontrado.");
+        }
+    };
+
+
     const fetchSelectedImmobile = async () => {
         const service = new ImmobilesServices();
+        const immobile = await service.SelectImmobile(selectedImmobileId ?? "");
 
-        const immobile = await service.SelectImmobile(selectedImmobileId ?? "")
-        const states = Object.values(BrazilianState);
-        const types = Object.values(ImmobileTypesEnum)
-
-        setImmobileType(types[parseInt(immobile.immobileType)])
-        setLocalityInfo(immobile.localityInfo)
-        setPostalCode(immobile.postalCode)
-        setCity(immobile.city)
-        setNeighborhood(immobile.neighborhood)
-        setState(states[parseInt(immobile.state)])
-        setStreet(immobile.street)
-        setValue(immobile.value)
-        setLocalLink(immobile.localLink)
-        setHasScripture(immobile.hasScripture)
-        setImmobileDescription(immobile.immobileDescription)
+        setImmobileType(immobile.immobileType);
+        setLocalityInfo(immobile.localityInfo);
+        setPostalCode(immobile.postalCode);
+        setCity(immobile.city);
+        setNeighborhood(immobile.neighborhood);
+        setState(immobile.state);
+        setStreet(immobile.street);
+        setValue(immobile.value);
+        setLocalLink(immobile.localLink);
+        setHasScripture(immobile.hasScripture);
+        setImmobileDescription(immobile.immobileDescription);
     }
 
     const saveImmobile = async () => {
         const service = new ImmobilesServices();
         const states = Object.values(BrazilianState);
         const types = Object.values(ImmobileTypesEnum)
-
         try {
-
             if (selectedImmobileId) {
                 const data: ImmobileUpdateDto = {
-                    city: city,
-                    hasScripture: hasScripture,
-                    immobileDescription: immobileDescription,
+                    city,
+                    hasScripture,
+                    immobileDescription,
                     immobileType: types.indexOf(immobileType),
-                    localityInfo: localityInfo,
-                    localLink: localLink,
-                    neighborhood: neighborhood,
-                    postalCode: postalCode,
+                    localityInfo,
+                    localLink,
+                    neighborhood,
+                    postalCode,
                     state: states.indexOf(state),
-                    street: street,
-                    value: value
-                }
+                    street,
+                    value
+                };
 
-                await service.UpdateImmobile(data, selectedImmobileId)
-
-                alert("Imóvel atualizado com sucesso")
+                await service.UpdateImmobile(data, selectedImmobileId);
+                alert("Imóvel atualizado com sucesso");
             } else {
-
                 const data: ImmobileCreationDto = {
-                    city: city,
-                    hasScripture: hasScripture,
-                    immobileDescription: immobileDescription,
+                    city,
+                    hasScripture,
+                    immobileDescription,
                     immobileType: types.indexOf(immobileType),
-                    localityInfo: localityInfo,
-                    localLink: localLink,
-                    neighborhood: neighborhood,
-                    postalCode: postalCode,
+                    localityInfo,
+                    localLink,
+                    neighborhood,
+                    postalCode,
                     state: states.indexOf(state),
-                    street: street,
-                    value: value
-                }
+                    street,
+                    value
+                };
 
-                await service.PostNewImmobile(data)
-
-                alert("Imóvel criado com sucesso")
+                await service.PostNewImmobile(data);
+                alert("Imóvel criado com sucesso");
             }
 
-        } catch (error) {
-            if ((error as AxiosResponse).status == 400) {
-                setErrorMessage((error as AxiosResponse).data)
-            } else if ((error as AxiosResponse).status == 401) {
-                setErrorMessage((error as AxiosResponse).data.toString())
+        } catch (err) {
+            const error = err as AxiosError;
+            if (error.response?.status === 400) {
+                setErrorMessage(error.response.data as string);
+            } else if (error.response?.status === 401) {
+                setErrorMessage(error.response.data?.toString() ?? "Não autorizado");
             } else {
-                setErrorMessage("Erro desconhecido!")
+                setErrorMessage("Erro desconhecido!");
             }
-        }
-        finally {
-            setImmobileType(ImmobileTypesEnum.LAND)
-            setLocalityInfo("")
-            setPostalCode("")
-            setCity("")
-            setNeighborhood("")
-            setState(BrazilianState.SC)
-            setStreet("")
-            setValue(0)
-            setLocalLink("")
-            setHasScripture(false)
-            setImmobileDescription("")
-            setSelectedImmobileId(null)
-            setIsModalOpen(false);
+        } finally {
+            resetForm();
         }
 
+        setTimeout(() => setErrorMessage(null), 5000);
+    };
 
-        setTimeout(() => {
-            setErrorMessage(null)
-        }, 5000)
+    const resetForm = () => {
+        setImmobileType(ImmobileTypesEnum.LAND);
+        setLocalityInfo("");
+        setPostalCode("");
+        setCity("");
+        setNeighborhood("");
+        setState(BrazilianState.SC);
+        setStreet("");
+        setValue(0);
+        setLocalLink("");
+        setHasScripture(false);
+        setImmobileDescription("");
+        setSelectedImmobileId(null);
+        setIsModalOpen(false);
     };
 
     useEffect(() => {
         if (selectedImmobileId) {
-            fetchSelectedImmobile()
+            fetchSelectedImmobile();
         }
+    }, [isModalOpen]);
 
-    }, [isModalOpen])
     return (
         <>
-
             <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
                 <div className="fixed inset-0 flex items-center justify-center">
                     <div
                         className="bg-white w-full max-w-md h-[80%] rounded-2xl shadow-lg p-6 overflow-scroll
-        [&::-webkit-scrollbar]:w-2
-        [&::-webkit-scrollbar-track]:bg-transparent
-        [&::-webkit-scrollbar-thumb]:bg-gray-300
-        dark:[&::-webkit-scrollbar-track]:bg-transparent
-        dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
+                        [&::-webkit-scrollbar]:w-2
+                        [&::-webkit-scrollbar-track]:bg-transparent
+                        [&::-webkit-scrollbar-thumb]:bg-gray-300
+                        dark:[&::-webkit-scrollbar-track]:bg-transparent
+                        dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
                     >
                         <h2 className="text-xl font-semibold mb-4 text-center">Cadastrar Imóvel</h2>
 
@@ -184,15 +209,17 @@ export function ImmobilesCreationModal(
                                     labelId="immobile-type-label"
                                     value={immobileType}
                                     onChange={(e) =>
-                                        setImmobileType(e.target.value)
+                                        setImmobileType(e.target.value as ImmobileTypesEnum)
                                     }
                                 >
-                                    <MenuItem value="LAND">Terreno</MenuItem>
-                                    <MenuItem value="HABITATION">Imóvel</MenuItem>
+                                    {Object.values(ImmobileTypesEnum).map((name) => (
+                                        <MenuItem key={name} value={name}>
+                                            {name}
+                                        </MenuItem>
+                                    ))}
                                 </Select>
                             </FormControl>
 
-                            {/* Localização */}
                             <TextField
                                 label="Titulo do imóvel"
                                 value={localityInfo}
@@ -203,7 +230,15 @@ export function ImmobilesCreationModal(
                             <TextField
                                 label="Código Postal"
                                 value={postalCode}
-                                onChange={(e) => setPostalCode(formatCEP(e.target.value))}
+                                onChange={(e) => {
+                                    const formatted = formatCEP(e.target.value);
+                                    setPostalCode(formatted);
+
+                                    const cleanCep = formatted.replace(/\D/g, "");
+                                    if (cleanCep.length === 8) {
+                                        fetchCepData(cleanCep);
+                                    }
+                                }}
                                 fullWidth
                             />
 
@@ -214,15 +249,14 @@ export function ImmobilesCreationModal(
                                     value={state}
                                     onChange={(e) => setState(e.target.value as BrazilianState)}
                                 >
-                                    {Object.entries(BrazilianState).map(([uf, name]) => (
-                                        <MenuItem key={uf} value={name}>
-                                            {name} ({uf})
+                                    {Object.values(BrazilianState).map((uf) => (
+                                        <MenuItem key={uf} value={uf}>
+                                            {uf}
                                         </MenuItem>
                                     ))}
                                 </Select>
                             </FormControl>
 
-                            {/* Cidade, Bairro, Rua */}
                             <TextField
                                 label="Cidade"
                                 value={city}
@@ -241,17 +275,16 @@ export function ImmobilesCreationModal(
                                 onChange={(e) => setStreet(e.target.value)}
                                 fullWidth
                             />
-                            <FormControl fullWidth sx={{ m: 1 }}>
+                            <FormControl fullWidth>
                                 <InputLabel htmlFor="outlined-adornment-amount">Preço</InputLabel>
                                 <OutlinedInput
-                                    value={formatCurrency(value.toString())}
+                                    value={formatCurrency(value)}
                                     onChange={(e) => {
                                         const raw = e.target.value.replace(/\D/g, "");
                                         const number = parseFloat(raw) / 100;
                                         setValue(isNaN(number) ? 0 : number);
                                     }}
                                     id="outlined-adornment-amount"
-                                    startAdornment={<InputAdornment position="start">$</InputAdornment>}
                                     label="Preço"
                                 />
                             </FormControl>
@@ -299,9 +332,7 @@ export function ImmobilesCreationModal(
                                     sx={{ width: "40%" }}
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        setIsModalOpen(false);
-                                        setSelectedImmobileId(null)
-
+                                        resetForm();
                                     }}
                                 >
                                     Cancelar
@@ -315,7 +346,7 @@ export function ImmobilesCreationModal(
                 <Alert variant="filled" severity="error">
                     {errorMessage}
                 </Alert>
-            )}</>
-    )
-
+            )}
+        </>
+    );
 }

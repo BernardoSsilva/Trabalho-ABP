@@ -30,7 +30,7 @@ export function ImageSlider({ images }: ImageSliderProps) {
     return (
         <>
             {/* Slider */}
-            <div className="relative w-full h-80 overflow-hidden rounded-lg shadow-md">
+            <div className="relative w-full h-80 overflow-hidden rounded-lg shadow-md mt-14">
                 <img
                     src={images[current].imageUrl}
                     alt={`Imagem ${current + 1}`}

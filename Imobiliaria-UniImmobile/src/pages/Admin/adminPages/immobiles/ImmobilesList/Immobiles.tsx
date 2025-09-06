@@ -17,10 +17,13 @@ dayjs.locale("pt-br");
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-function formatCurrency(value: number) {
-    return value?.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-}
-
+const formatCurrency = (value: number) => {
+    if (!value) return "";
+    return value.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+    });
+};
 
 export function ImmobileList() {
     const [pagesNumber, setPagesNumber] = useState<number>(0);

@@ -1,5 +1,5 @@
 export enum ImmobileTypesEnum {
-    LAND = "TERRENO",
-    HOUSE = "CASA",
-    APARTMENT = "APARTAMENTO"
+    LAND = "Terreno",
+    HOUSE = "Casa",
+    APARTMENT = "Apartamento"
 }
