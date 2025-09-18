@@ -1,14 +1,14 @@
-import { Modal, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { Plus } from "lucide-react";
-import { usersList } from "../../../../../utilities/exampleData";
+import { Backdrop, CircularProgress, Pagination, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
-import { useState } from "react";
-import type { UserRolesEnum } from "../../../../../models/types/userRolesEnum";
+import { Pen, Plus, Trash } from "lucide-react";
+import { useEffect, useState } from "react";
 import type { UserEntity } from "../../../../../models/user";
-import { v4 as uuidv4 } from 'uuid';
+import { UserServices } from "../../../../../services/user-services";
+import { UserCreationModal } from "./components/UserCreationModal";
+import { UserDeleteDialog } from "./components/UserDeleteDialog";
 
 
 dayjs.locale("pt-br");
@@ -17,169 +17,71 @@ dayjs.extend(timezone);
 
 export function UsersList() {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
-    const [userEmail, setUserEmail] = useState("");
-    const [userRole, setUserRole] = useState<UserRolesEnum>("ADMIN");
-    const [userPhone, setUserPhone] = useState("");
-    const [userBornDate, setUserBornDate] = useState<Date>(new Date());
-    const [userCivilState, setUserCivilState] = useState("");
-    const [userName, setUserName] = useState("");
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false)
 
-    const saveUser = () => {
-        const newUser: UserEntity = {
-            userEmail,
-            userRole,
-            phone: userPhone,
-            bornDate: userBornDate,
-            civilState: userCivilState,
-            userName,
-            id: uuidv4(),
-            CreatedAt: new Date()
+    const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
+    const [pagesNumber, setPagesNumber] = useState<number>(0);
+    const [usersData, setUsersData] = useState<UserEntity[]>([]);
+    const [atualPage, setAtualPage] = useState<number>(1);
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    const fetchUsers = async () => {
+        setIsLoading(true)
+
+        try {
+            const service = new UserServices();
+
+            const responseData = (await service.listUsers(10, atualPage))
+            setUsersData(responseData.users);
+            setPagesNumber(responseData.pageNumber);
+        } catch (error) {
+            alert("Erro de servidor")
+        } finally {
+            setIsLoading(false)
         }
-        console.log(newUser)
-
-        usersList.push(newUser)
-
-        console.log("pushou")
-
-        setIsModalOpen(false)
-        setUserEmail("")
-        setUserRole("ADMIN")
-        setUserPhone("")
-        setUserBornDate(new Date())
-        setUserCivilState("")
-        setUserName("")
     }
+
+    useEffect(() => {
+        fetchUsers();
+    }, [atualPage, isModalOpen, isDeleteModalOpen]);
+
     return (
-        <div className="mt-3 w-full h-full">
+        <div className="mt-3 w-[98%] h-[20%]">
+            <Backdrop
+                open={isLoading}
+            >
+                <div className="bg-white flex border-(--primary-color) border-2 rounded-xl p-4 items-center justify-center gap-1">
 
-            <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                <div className="fixed inset-0 flex items-center justify-center ">
-                    <div className="bg-white w-full max-w-md rounded-2xl shadow-lg p-6">
-                        <h2 className="text-xl font-semibold mb-4 text-center">Cadastrar Usuário</h2>
-
-                        <form className="flex flex-col gap-4">
-                            <div>
-                                <label className="block text-sm font-medium mb-1">Nome</label>
-                                <input
-                                    type="text"
-                                    name="userName"
-                                    placeholder="Digite o nome"
-                                    value={userName}
-                                    onChange={(e) => setUserName(e.target.value)}
-                                    className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium mb-1">E-mail</label>
-                                <input
-                                    type="email"
-                                    name="userEmail"
-                                    placeholder="exemplo@email.com"
-                                    value={userEmail}
-                                    onChange={(e) => setUserEmail(e.target.value)}
-                                    className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium mb-1">Papel do Usuário</label>
-                                <select
-                                    name="userRole"
-                                    value={userRole}
-                                    onChange={(e) => setUserRole(e.target.value as UserRolesEnum)}
-                                    className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                >
-                                    <option value="ADMIN">Admin</option>
-                                    <option value="USER">Usuário</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium mb-1">Telefone</label>
-                                <input
-                                    type="tel"
-                                    name="phone"
-                                    placeholder="(99) 99999-9999"
-                                    value={userPhone}
-                                    onChange={(e) => setUserPhone(e.target.value)}
-                                    className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium mb-1">Data de Nascimento</label>
-                                <input
-                                    type="date"
-                                    name="bornDate"
-                                    value={dayjs(userBornDate).format("YYYY-MM-DD")}
-                                    onChange={(e) => setUserBornDate(new Date(e.target.value))}
-                                    className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium mb-1">Estado Civil</label>
-                                <input
-                                    type="text"
-                                    name="civilState"
-                                    placeholder="Ex: Solteiro, Casado..."
-                                    value={userCivilState}
-                                    onChange={(e) => setUserCivilState(e.target.value)}
-                                    className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                />
-                            </div>
-
-<div className="flex justify-between">
-
-                            <button
-                                type="submit"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    saveUser();
-                                }}
-                                className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-300 w-[40%]"
-                                >
-                                Salvar
-                            </button>
-                             <button
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    setIsModalOpen(false);
-                                }}
-                                className="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 transition duration-300 w-[40%]"
-                                >
-                                Cancelar
-                            </button>
-                                </div>
-                        </form>
-                    </div>
+                    <CircularProgress color="inherit" size={24} />
+                    Carregando Dados
                 </div>
-            </Modal>
+            </Backdrop>
 
+            <UserCreationModal isModalOpen={isModalOpen} setIsModalOpen={(value) => setIsModalOpen(value)} userId={selectedUserId} setSelectedUserId={setSelectedUserId} />
+            <UserDeleteDialog isOpen={isDeleteModalOpen} setIsOpen={setIsDeleteModalOpen} userId={selectedUserId ?? ""} setSelectedUserId={setSelectedUserId} />
 
             <section className="flex justify-end w-full border-b-2 border-b-[var(--primary-color)] p-2">
                 <button onClick={() => setIsModalOpen(true)} className="p-3 bg-blue-400 rounded-full hover:bg-blue-500 transition-all duration-500">
                     <Plus size={20} color="white" />
                 </button>
             </section>
-            <div className="w-full max-h-[23rem] overflow-auto overflow-x-hidden">
+            <div className="w-full max-h-[60vh] overflow-auto overflow-x-hidden">
                 <TableContainer>
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>ID do usuário</TableCell>
                                 <TableCell>Nome do usuário</TableCell>
                                 <TableCell>Data de nascimento</TableCell>
                                 <TableCell>Data de criação</TableCell>
                                 <TableCell>Email</TableCell>
                                 <TableCell>Tipo de usuário</TableCell>
+                                <TableCell>Comandos</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {usersList.map((row) => (
+                            {usersData.length > 0 && usersData.map((row) => (
                                 <TableRow key={row.id}>
-                                    <TableCell>{row.id}</TableCell>
                                     <TableCell>{row.userName}</TableCell>
                                     <TableCell>
                                         {dayjs(row.bornDate).tz("America/Sao_Paulo").format("D [de] MMMM [de] YYYY")}
@@ -188,13 +90,39 @@ export function UsersList() {
                                         {dayjs(row.CreatedAt).tz("America/Sao_Paulo").format("D [de] MMMM [de] YYYY")}
                                     </TableCell>
                                     <TableCell>{row.userEmail}</TableCell>
-                                    <TableCell>{row.userRole}</TableCell>
+                                    <TableCell>{row.role}</TableCell>
+                                    <TableCell>
+                                        <div className="flex flex-row gap-1.5">
+                                            <button className="bg-amber-500 p-2 rounded-md hover:bg-amber-600 transition-colors duration-200 cursor-pointer" onClick={() => {
+                                                setSelectedUserId(row.id)
+                                                setIsModalOpen(true)
+                                            }}>
+                                                <Pen size={24} color="white" />
+                                            </button>
+
+                                            <button className="bg-red-500 p-2 rounded-md hover:bg-red-600 transition-colors duration-200 cursor-pointer" onClick={() => {
+                                                setSelectedUserId(row.id)
+                                                setIsDeleteModalOpen(true)
+                                            }}>
+                                                <Trash size={24} color="white" />
+                                            </button>
+                                        </div>
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
+
             </div>
+
+            <Pagination
+                page={atualPage}
+                count={pagesNumber}
+                onChange={(e: React.ChangeEvent<unknown>, value: number) => {
+                    setAtualPage(value);
+                }}
+            />
         </div>
     );
 }
