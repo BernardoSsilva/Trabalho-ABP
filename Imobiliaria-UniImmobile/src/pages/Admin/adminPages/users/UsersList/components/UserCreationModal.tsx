@@ -49,7 +49,7 @@ export function UserCreationModal({ isModalOpen, setIsModalOpen, userId, setSele
 
         if (userId) {
 
-            setUser((await service.findUser(userId)).data);
+            setUser((await service.findUser(userId)));
         } else {
             setUser(undefined)
         }
@@ -131,7 +131,7 @@ export function UserCreationModal({ isModalOpen, setIsModalOpen, userId, setSele
             if (userId) {
                 try {
 
-                    const existingUser = (await service.findUser(userId)).data;
+                    const existingUser = (await service.findUser(userId));
                     existingUser.userEmail = userEmail;
                     existingUser.role = userRole;
                     existingUser.phone = userPhone;
@@ -142,7 +142,7 @@ export function UserCreationModal({ isModalOpen, setIsModalOpen, userId, setSele
                         BornDate: existingUser.bornDate,
                         UserName: existingUser.userName,
                         Phone: existingUser.phone,
-                        Role: existingUser.Role == UserRolesEnum.ADMIN ? 0 : 1,
+                        Role: existingUser.role == UserRolesEnum.ADMIN ? 0 : 1,
                         UserEmail: existingUser.userEmail
                     }
 

@@ -87,7 +87,7 @@ export function UsersList() {
                                         {dayjs(row.bornDate).tz("America/Sao_Paulo").format("D [de] MMMM [de] YYYY")}
                                     </TableCell>
                                     <TableCell>
-                                        {dayjs(row.CreatedAt).tz("America/Sao_Paulo").format("D [de] MMMM [de] YYYY")}
+                                        {dayjs(row.createdAt).tz("America/Sao_Paulo").format("D [de] MMMM [de] YYYY")}
                                     </TableCell>
                                     <TableCell>{row.userEmail}</TableCell>
                                     <TableCell>{row.role}</TableCell>
@@ -120,6 +120,7 @@ export function UsersList() {
                 page={atualPage}
                 count={pagesNumber}
                 onChange={(e: React.ChangeEvent<unknown>, value: number) => {
+                    console.log(e)
                     setAtualPage(value);
                 }}
             />

@@ -1,12 +1,12 @@
-import { Alert, Button, Checkbox, FormControl, FormControlLabel, InputAdornment, InputLabel, MenuItem, Modal, OutlinedInput, Select, TextField } from "@mui/material";
+import { Alert, Button, Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Modal, OutlinedInput, Select, TextField } from "@mui/material";
+import type { AxiosError } from "axios";
+import axios from "axios";
 import { useEffect, useState } from "react";
+import type { ImmobileCreationDto } from "../../../../../../models/DTOs/ImmobileCreationDTO";
+import type { ImmobileUpdateDto } from "../../../../../../models/DTOs/ImmobileUpdateDto";
+import { BrazilianState } from "../../../../../../models/types/brazilianStatesEnum";
 import { ImmobileTypesEnum } from "../../../../../../models/types/immobileTypesEnum";
 import { ImmobilesServices } from "../../../../../../services/immobiles-services";
-import { BrazilianState } from "../../../../../../models/types/brazilianStatesEnum";
-import type { ImmobileCreationDto } from "../../../../../../models/DTOs/ImmobileCreationDTO";
-import type { AxiosError } from "axios";
-import type { ImmobileUpdateDto } from "../../../../../../models/DTOs/ImmobileUpdateDto";
-import axios from "axios";
 
 type Props = {
     isModalOpen: boolean,

@@ -1,14 +1,13 @@
-import foto from "../../../assets/ImageImmobileDetails.png";
-import type { ImmobileEntity } from "../../../models/immobile";
-import { NavBar } from "../../../components/NavBar";
-import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { ImmobilesServices } from "../../../services/immobiles-services";
-import { ImageSlider } from "./components/ImageSlider";
-import type { ImageEntity } from "../../../models/image";
-import { ImageServices } from "../../../services/images-services";
-import { UserServices } from "../../../services/user-services";
 import { ArrowLeft, MessageCircle } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { NavBar } from "../../../components/NavBar";
+import type { ImageEntity } from "../../../models/image";
+import type { ImmobileEntity } from "../../../models/immobile";
+import { ImageServices } from "../../../services/images-services";
+import { ImmobilesServices } from "../../../services/immobiles-services";
+import { UserServices } from "../../../services/user-services";
+import { ImageSlider } from "./components/ImageSlider";
 
 export function ImmobileDetail() {
   const { id } = useParams();

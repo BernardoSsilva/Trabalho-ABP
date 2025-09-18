@@ -84,6 +84,7 @@ export function Home() {
                     page={atualPage}
                     count={pagesNumber}
                     onChange={(e: React.ChangeEvent<unknown>, value: number) => {
+                        console.log(e)
                         setAtualPage(value);
                     }}
                 />

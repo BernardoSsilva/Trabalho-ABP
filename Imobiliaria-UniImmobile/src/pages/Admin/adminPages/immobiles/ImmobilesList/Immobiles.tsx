@@ -150,6 +150,7 @@ export function ImmobileList() {
                 page={atualPage}
                 count={pagesNumber}
                 onChange={(e: React.ChangeEvent<unknown>, value: number) => {
+                    console.log(e)
                     setAtualPage(value);
                 }}
             />
